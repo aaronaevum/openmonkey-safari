@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OpenMonkey for Safari</title>
+  <link rel="stylesheet" href="pages.css" />
+</head>
+<body>
+  <main id="app">
+    <header class="app-header">
+      <img class="logo" src="icons/icon.svg" alt="" width="36" height="36" />
+      <div class="app-title">
+        <h1>OpenMonkey</h1>
+        <p class="subtitle" data-i18n="subtitle">Userscripts &amp; userstyles for Safari</p>
+      </div>
+      <button id="settings-toggle" type="button" aria-expanded="false" aria-controls="settings-panel" data-i18n="settingsTitle">Settings</button>
+    </header>
+
+    <section id="settings-panel" class="settings-panel" hidden aria-label="Settings">
+      <div class="setting-row">
+        <div class="setting-text">
+          <span class="setting-name" data-i18n="settingsEnableInjection">Enable injection</span>
+          <span class="setting-hint" data-i18n="settingsEnableInjectionHint">When off, no script runs on any page until the next navigation. Per-script states are kept.</span>
+        </div>
+        <button id="global-enabled" type="button" class="switch on" role="switch" aria-checked="true" data-i18n-aria-label="masterSwitchAria" aria-label="Enable script injection"></button>
+      </div>
+      <div class="setting-row">
+        <div class="setting-text">
+          <span class="setting-name" data-i18n="languageLabel">Language</span>
+          <span class="setting-hint" data-i18n="languageSettingHint">Interface language. “Follow system” uses your browser language.</span>
+        </div>
+        <div class="lang-segments" role="group" data-i18n-aria-label="languageLabel">
+          <button id="lang-system" type="button" class="segment selected" aria-selected="true" data-i18n="languageSystem">Follow system</button>
+          <button id="lang-zh" type="button" class="segment" aria-selected="false" data-i18n="languageZh">中文</button>
+          <button id="lang-en" type="button" class="segment" aria-selected="false" data-i18n="languageEn">English</button>
+        </div>
+      </div>
+      <div class="setting-row">
+        <div class="setting-text">
+          <span class="setting-name" data-i18n="settingsUpdateInterval">Update check interval</span>
+          <span class="setting-hint" data-i18n="settingsUpdateIntervalHint">How often the extension checks your scripts' @updateURL in the background.</span>
+        </div>
+        <select id="update-interval" data-i18n-aria-label="settingsUpdateInterval">
+          <option value="0" data-i18n="intervalNever">Never</option>
+          <option value="1" data-i18n="intervalDaily">Daily</option>
+          <option value="7" data-i18n="intervalWeekly">Weekly</option>
+          <option value="30" data-i18n="intervalMonthly">Monthly</option>
+        </select>
+      </div>
+      <div class="setting-row">
+        <div class="setting-text">
+          <span class="setting-name" data-i18n="featureDarkMode">Dark mode</span>
+          <span class="setting-hint" data-i18n="helpDarkMode">Darkens web pages with a stylesheet (Auto follows your system). Photos and videos are left untouched.</span>
+        </div>
+        <button id="toggle-darkmode-enabled" type="button" class="switch" role="switch" aria-checked="false" data-i18n-aria-label="featureDarkMode" aria-label="Dark mode"></button>
+        <div class="lang-segments" role="group" data-i18n-aria-label="featureDarkMode">
+          <button id="dark-auto" type="button" class="segment selected" aria-selected="true" data-i18n="darkModeAuto">Auto</button>
+          <button id="dark-light" type="button" class="segment" aria-selected="false" data-i18n="darkModeLight">Light</button>
+          <button id="dark-dark" type="button" class="segment" aria-selected="false" data-i18n="darkModeDark">Dark</button>
+        </div>
+      </div>
+      <div class="setting-row">
+        <div class="setting-text">
+          <span class="setting-name" data-i18n="featureAdFilter">Ad filter</span>
+          <span class="setting-hint" data-i18n="featureAdFilterDesc">Hide ads with custom filter rules</span>
+        </div>
+        <button id="toggle-adfilter" type="button" class="switch" role="switch" aria-checked="false" data-i18n-aria-label="featureAdFilter" aria-label="Ad filter"></button>
+      </div>
+      <div class="setting-row">
+        <div class="setting-text">
+          <span class="setting-name" data-i18n="featureTagMode">Tag mode</span>
+          <span class="setting-hint" data-i18n="featureTagModeDesc">Tap to remove ads on a page</span>
+        </div>
+        <button id="toggle-tagmode" type="button" class="switch" role="switch" aria-checked="false" data-i18n-aria-label="featureTagMode" aria-label="Tag mode"></button>
+      </div>
+      <div class="setting-row">
+        <div class="setting-text">
+          <span class="setting-name" data-i18n="featureSmartSearch">Smart search</span>
+          <span class="setting-hint" data-i18n="featureSmartSearchDesc">Trigger word + search word, switch engines fast</span>
+        </div>
+        <button id="toggle-smartsearch" type="button" class="switch" role="switch" aria-checked="false" data-i18n-aria-label="featureSmartSearch" aria-label="Smart search"></button>
+      </div>
+      <div class="setting-row">
+        <div class="setting-text">
+          <span class="setting-name" data-i18n="smartSearchTriggerLabel">Trigger position</span>
+          <span class="setting-hint" data-i18n="helpSmartSearch">Type a trigger word and a query, e.g. “bd 猫” or “g cats”. Without a trigger, the default engine is used.</span>
+        </div>
+        <div class="lang-segments" role="group" data-i18n-aria-label="smartSearchTriggerLabel">
+          <button id="trigger-prefix" type="button" class="segment selected" aria-selected="true" data-i18n="triggerPrefix">Prefix (trigger first)</button>
+          <button id="trigger-suffix" type="button" class="segment" aria-selected="false" data-i18n="triggerSuffix">Suffix (trigger last)</button>
+        </div>
+      </div>
+      <div class="setting-row">
+        <div class="setting-text">
+          <span class="setting-name" data-i18n="featureSniff">Resource manager</span>
+          <span class="setting-hint" data-i18n="featureSniffDesc">Find media resources on this page</span>
+        </div>
+        <button id="toggle-sniff" type="button" class="switch" role="switch" aria-checked="false" data-i18n-aria-label="featureSniff" aria-label="Resource manager"></button>
+      </div>
+      <div class="setting-row">
+        <div class="setting-text">
+          <span class="setting-name" data-i18n="resourceDetection">Resource detection</span>
+          <span class="setting-hint" data-i18n="resourceDetectionHint">Detect media on pages and report it to the app. The floating sniff button is a separate switch.</span>
+        </div>
+        <button id="toggle-resource-detection" type="button" class="switch on" role="switch" aria-checked="true" data-i18n-aria-label="resourceDetection" aria-label="Resource detection"></button>
+      </div>
+      <div class="setting-row">
+        <div class="setting-text">
+          <span class="setting-name" data-i18n="showSniffButton">Show sniff button</span>
+          <span class="setting-hint" data-i18n="showSniffButtonHint">Show a floating button at the bottom-right of the page that opens the media list.</span>
+        </div>
+        <button id="toggle-show-sniff" type="button" class="switch on" role="switch" aria-checked="true" data-i18n-aria-label="showSniffButton" aria-label="Show sniff button"></button>
+      </div>
+      <div class="setting-row">
+        <div class="setting-text">
+          <span class="setting-name" data-i18n="longPressSniff">Long-press to sniff</span>
+          <span class="setting-hint" data-i18n="longPressSniffHint">Long-pressing the floating button opens the media list too.</span>
+        </div>
+        <button id="toggle-longpress-sniff" type="button" class="switch on" role="switch" aria-checked="true" data-i18n-aria-label="longPressSniff" aria-label="Long-press to sniff"></button>
+      </div>
+      <div class="setting-row">
+        <div class="setting-text">
+          <span class="setting-name" data-i18n="fileSortLabel">File sorting</span>
+        </div>
+        <select id="file-sort" data-i18n-aria-label="fileSortLabel">
+          <option value="timeAsc" data-i18n="fileSortTimeAsc">Time ascending</option>
+          <option value="timeDesc" data-i18n="fileSortTimeDesc">Time descending</option>
+          <option value="name" data-i18n="fileSortName">Name</option>
+        </select>
+      </div>
+      <div class="setting-row">
+        <div class="setting-text">
+          <span class="setting-name" data-i18n="showPromptPopups">Show prompt popups</span>
+          <span class="setting-hint" data-i18n="showPromptPopupsHint">Show in-page prompt popups.</span>
+        </div>
+        <button id="toggle-prompts" type="button" class="switch on" role="switch" aria-checked="true" data-i18n-aria-label="showPromptPopups" aria-label="Show prompt popups"></button>
+      </div>
+      <div class="setting-row">
+        <div class="setting-text">
+          <span class="setting-name" data-i18n="syncEnabled">Enable iCloud sync</span>
+          <span class="setting-hint" data-i18n="syncEnabledHint">Sync scripts and settings with iCloud (managed by the host app).</span>
+        </div>
+        <button id="toggle-sync" type="button" class="switch" role="switch" aria-checked="false" data-i18n-aria-label="syncEnabled" aria-label="Enable iCloud sync"></button>
+      </div>
+      <div class="setting-row">
+        <div class="setting-text">
+          <span class="setting-name" data-i18n="settingsImportExport">Import &amp; export</span>
+          <span class="setting-hint" data-i18n="settingsImportExportHint">Scripts are stored on this device only; export them to keep a backup.</span>
+        </div>
+        <div class="import-export">
+          <button id="import-script-button" type="button" data-i18n="importUserJs">Import .user.js</button>
+          <button id="paste-script" type="button" data-i18n="pasteClipboard">Paste from clipboard</button>
+          <button id="import-json-button" type="button" data-i18n="importJson">Import JSON</button>
+          <button id="export-json" type="button" data-i18n="exportJson">Export JSON</button>
+          <button id="import-zip-button" type="button" data-i18n="importZip">Import ZIP</button>
+          <button id="export-zip" type="button" data-i18n="exportZip">Export ZIP</button>
+          <input id="import-script-file" type="file" accept=".user.js,.js,text/plain" hidden />
+          <input id="import-json-file" type="file" accept=".json,application/json" hidden />
+          <input id="import-zip-file" type="file" accept=".zip,application/zip" hidden />
+        </div>
+      </div>
+      <p id="update-status" class="muted update-status"></p>
+    </section>
+
+    <p id="demo-note" class="demo-note" hidden data-i18n="demoNote">Demo mode: the extension API is unavailable, showing sample data from local storage.</p>
+    <p id="status" class="status" role="status"></p>
+
+    <div class="search-row">
+      <input id="search" type="search" placeholder="Search scripts…" data-i18n-placeholder="searchPlaceholderPages" data-i18n-aria-label="searchAria" aria-label="Search scripts" />
+      <select id="sort" data-i18n-aria-label="sortAria" aria-label="Sort scripts">
+        <option value="updated" data-i18n="sortLastUpdated">Last updated</option>
+        <option value="oldest" data-i18n="sortOldest">Oldest first</option>
+        <option value="name" data-i18n="sortName">Name</option>
+      </select>
+    </div>
+
+    <div class="segments" role="tablist" aria-label="Filter scripts">
+      <button id="seg-activated" type="button" class="segment selected" role="tab" aria-selected="true" data-i18n="segActivated">Activated</button>
+      <button id="seg-stopped" type="button" class="segment" role="tab" aria-selected="false" data-i18n="segStopped">Stopped</button>
+      <button id="seg-featured" type="button" class="segment" role="tab" aria-selected="false" data-i18n="segFeatured">Featured</button>
+    </div>
+
+    <div class="actions-row">
+      <button id="check-updates" type="button" data-i18n="checkUpdates">Check for updates</button>
+      <button id="new-script" type="button" class="primary" data-i18n="newScript">New script</button>
+      <button id="new-userstyle" type="button" data-i18n="newUserstyle">New userstyle</button>
+    </div>
+
+    <section class="library" aria-label="Script library">
+      <div class="library-head">
+        <h2><span data-i18n="libraryTitle">Library</span> <span id="library-count" class="count-badge"></span></h2>
+        <div class="library-actions">
+          <button id="bulk-enable" type="button" data-i18n="bulkEnable">Enable all shown</button>
+          <button id="bulk-disable" type="button" data-i18n="bulkDisable">Disable all shown</button>
+        </div>
+      </div>
+      <div class="list-container">
+        <h3><span data-i18n="userscriptsTitle">Userscripts</span> <span id="userscript-count" class="count-badge"></span></h3>
+        <ul id="userscript-list" class="script-list"></ul>
+        <h3><span data-i18n="userstylesTitle">Userstyles</span> <span id="userstyle-count" class="count-badge"></span></h3>
+        <ul id="userstyle-list" class="script-list"></ul>
+        <p id="empty-state" class="muted empty-state" hidden data-i18n="emptyNoScriptsPages">No scripts installed yet. Import a .user.js file or create a new script.</p>
+      </div>
+    </section>
+
+    <!-- v0.5.0 feature editors: smart-search engines, custom ad rules,
+         per-site tag rules, and the sniffed media list. -->
+    <section class="feature-section" aria-label="Smart search engines">
+      <h2 data-i18n="smartSearchEnginesTitle">Search engines</h2>
+      <p class="muted section-hint" data-i18n="helpSmartSearch">Type a trigger word and a query, e.g. “bd 猫” or “g cats”. Without a trigger, the default engine is used.</p>
+      <ul id="engine-list" class="rule-list"></ul>
+      <div class="rule-form">
+        <input id="engine-name" type="text" data-i18n-placeholder="engineName" placeholder="Name" data-i18n-aria-label="engineName" aria-label="Name" />
+        <input id="engine-trigger" type="text" data-i18n-placeholder="engineTrigger" placeholder="Trigger" data-i18n-aria-label="engineTrigger" aria-label="Trigger" />
+        <input id="engine-url" type="url" data-i18n-placeholder="engineUrl" placeholder="URL template ({q} = query)" data-i18n-aria-label="engineUrl" aria-label="URL template ({q} = query)" />
+        <button id="engine-add" type="button" class="primary" data-i18n="addEngine">Add engine</button>
+      </div>
+      <p id="engine-status" class="muted rule-status" role="status"></p>
+    </section>
+
+    <section class="feature-section" aria-label="Custom ad rules">
+      <h2 data-i18n="customAdRulesTitle">Custom ad rules</h2>
+      <p class="muted section-hint" data-i18n="helpAdFilter">Hides common ad slots on every page. Add your own CSS selectors in the dashboard.</p>
+      <ul id="adrule-list" class="rule-list"></ul>
+      <div class="rule-form">
+        <input id="adrule-input" type="text" data-i18n-placeholder="customAdRulePlaceholder" placeholder="CSS selector, e.g. .my-ad-banner" data-i18n-aria-label="customAdRulesTitle" aria-label="Custom ad rules" />
+        <button id="adrule-add" type="button" class="primary" data-i18n="addRule">Add</button>
+      </div>
+      <p id="adrule-status" class="muted rule-status" role="status"></p>
+    </section>
+
+    <section class="feature-section" aria-label="Tag rules">
+      <h2 data-i18n="tagRulesTitle">Tag rules (hidden elements)</h2>
+      <p class="muted section-hint" data-i18n="helpTagMode">Turn it on, then tap any element on a page to hide it. The hide rule is saved for that site.</p>
+      <ul id="tagrule-list" class="rule-list"></ul>
+    </section>
+
+    <section class="feature-section" aria-label="Media resources">
+      <h2 data-i18n="resourcesTitle">Media on this page</h2>
+      <p class="muted section-hint" data-i18n="resourcesNote">Scanned from the current tab. Downloads work for same-origin media only.</p>
+      <div class="actions-row">
+        <button id="resources-refresh" type="button" data-i18n="resourcesRefresh">Refresh</button>
+      </div>
+      <ul id="resources-list" class="rule-list"></ul>
+    </section>
+
+    <section id="detail-panel" class="detail" hidden>
+      <div class="detail-head">
+        <span id="detail-icon" class="script-icon" aria-hidden="true">O</span>
+        <div class="detail-title">
+          <h2 id="detail-name">—</h2>
+          <p class="detail-sub"><span id="detail-version">—</span><span id="detail-author-wrap"> · <span id="detail-author">—</span></span></p>
+        </div>
+        <button id="detail-enable" type="button" class="switch on" role="switch" aria-checked="true" data-i18n-aria-label="enableScriptAria" aria-label="Enable script"></button>
+      </div>
+      <p id="detail-description" class="detail-description muted"></p>
+      <dl class="meta">
+        <div><dt data-i18n="detailHomepage">Homepage</dt><dd><a id="detail-homepage" href="#" target="_blank" rel="noopener">—</a></dd></div>
+        <div><dt data-i18n="detailUpdateUrl">Update URL</dt><dd id="detail-update-url" class="mono">—</dd></div>
+        <div><dt data-i18n="detailUpdate">Update</dt><dd>
+          <span id="detail-update">—</span>
+          <button id="detail-check-update" type="button" class="mini-button" data-i18n="checkButton">Check</button>
+          <button id="detail-update-apply" type="button" class="mini-button primary" hidden data-i18n="detailUpdate">Update</button>
+        </dd></div>
+        <div><dt data-i18n="detailGrants">Grants</dt><dd><ul id="detail-grants" class="chip-list"></ul></dd></div>
+        <div><dt data-i18n="detailRunsOn">Runs on</dt><dd id="detail-matches" class="mono">—</dd></div>
+        <div><dt data-i18n="detailLastRun">Last run</dt><dd id="detail-last-run">—</dd></div>
+        <div><dt data-i18n="detailLastError">Last error</dt><dd id="detail-last-error">—</dd></div>
+      </dl>
+      <label class="test-url-label"><span data-i18n="testUrlLabel">Test URL</span>
+        <input id="test-url" type="url" placeholder="https://example.com/page" />
+      </label>
+      <p id="test-result" class="muted"></p>
+      <div class="actions">
+        <button id="detail-edit" type="button" class="primary" data-i18n="editButton">Edit</button>
+        <button id="detail-duplicate" type="button" data-i18n="duplicateButton">Duplicate</button>
+        <button id="detail-export" type="button" data-i18n="exportUserJsButton">Export .user.js</button>
+        <button id="detail-delete" type="button" class="danger" data-i18n="deleteButton">Delete</button>
+      </div>
+    </section>
+
+    <section id="editor-section" class="editor-section" hidden>
+      <div class="editor-header">
+        <h2 id="editor-title">Script editor</h2>
+        <span id="editor-status" class="muted"></span>
+        <button id="editor-save" type="button" class="primary" data-i18n="editorSave">Save (Ctrl/Cmd+S)</button>
+        <button id="editor-discard" type="button" data-i18n="editorDiscard">Discard changes</button>
+        <button id="editor-close" type="button" data-i18n="editorClose">Close</button>
+      </div>
+      <div id="editor" class="editor"></div>
+    </section>
+  </main>
+
+  <script type="module" src="dist/pages.js"></script>
+</body>
+</html>

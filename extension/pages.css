@@ -1,0 +1,269 @@
+/* OpenMonkey for Safari — dashboard styles (v0.3.0, from scratch).
+ *
+ * Stay-style script list, Addons-style cards: system grey
+ * background, one white rounded list container, hairline rows,
+ * 40px rounded-square icons, green switches, capsule segments.
+ * Mobile-first single column; desktop is a max-width 720px
+ * centred column. Brand purple (#6c5cff) is used sparingly:
+ * primary buttons only. Full dark-mode support via
+ * prefers-color-scheme. The editor is always dark (see below).
+ * See docs/ui-redesign.md. */
+:root {
+  color-scheme: light dark;
+  --bg: #f2f2f7;
+  --card: #ffffff;
+  --text: #1c1c1e;
+  --secondary: #6e6e73;
+  --brand: #6c5cff;
+  --brand-soft: rgba(108, 92, 255, 0.12);
+  --green: #34c759;
+  --orange: #ff9500;
+  --danger: #ff3b30;
+  --border: rgba(60, 60, 67, 0.18);
+  --field: #ffffff;
+  --segment-selected: #e9e9eb;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --editor-bg: #1e1e1e;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1c1c1e;
+    --card: #2c2c2e;
+    --text: #f5f5f7;
+    --secondary: #98989d;
+    --brand: #8b7cff;
+    --brand-soft: rgba(139, 124, 255, 0.2);
+    --border: rgba(255, 255, 255, 0.16);
+    --field: #3a3a3c;
+    --segment-selected: #48484a;
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+  }
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body {
+  margin: 0;
+  font: 14px/1.5 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+  color: var(--text); background: var(--bg);
+}
+#app { max-width: 720px; margin: 0 auto; padding: 16px 16px 40px; }
+h1 { font-size: 20px; margin: 0; letter-spacing: -0.02em; }
+h2 { font-size: 17px; margin: 0; letter-spacing: -0.01em; }
+h3 { font-size: 12px; margin: 14px 12px 6px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--secondary); }
+.mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; overflow-wrap: break-word; }
+.muted { color: var(--secondary); }
+button {
+  font: inherit; cursor: pointer; border-radius: 10px; padding: 7px 12px;
+  border: 1px solid var(--border); background: var(--card); color: var(--text);
+}
+button:hover { filter: brightness(0.97); }
+button.primary { background: var(--brand); border-color: var(--brand); color: #fff; font-weight: 600; }
+button.danger { color: var(--danger); border-color: rgba(255, 59, 48, 0.4); }
+button:disabled { opacity: 0.5; cursor: default; }
+input[type="search"], input[type="url"], select {
+  font: inherit; padding: 8px 12px;
+  border: none; border-radius: 10px;
+  background: var(--field); color: var(--text);
+  box-shadow: var(--shadow);
+}
+input[type="search"]:focus, input[type="url"]:focus, select:focus { outline: 2px solid var(--brand); outline-offset: -1px; }
+
+/* iOS-style switch (button with role="switch"). */
+.switch {
+  appearance: none; -webkit-appearance: none;
+  width: 51px; height: 31px; flex: none;
+  border: none; border-radius: 16px; padding: 0; cursor: pointer;
+  background: rgba(120, 120, 128, 0.32);
+  position: relative; transition: background 0.15s ease;
+}
+.switch::after {
+  content: ""; position: absolute; top: 2px; left: 2px;
+  width: 27px; height: 27px; border-radius: 50%;
+  background: #fff; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  transition: transform 0.15s ease;
+}
+.switch.on { background: var(--green); }
+.switch.on::after { transform: translateX(20px); }
+.switch.small { width: 44px; height: 27px; }
+.switch.small::after { width: 23px; height: 23px; }
+.switch.small.on::after { transform: translateX(17px); }
+
+/* Header. */
+.app-header { display: flex; align-items: center; gap: 12px; padding: 4px 2px 14px; }
+.logo { border-radius: 9px; flex: none; }
+.app-title { flex: 1; min-width: 0; }
+.subtitle { margin: 0; font-size: 13px; color: var(--secondary); }
+
+/* Settings panel. */
+.settings-panel {
+  margin-bottom: 14px; background: var(--card); border: 1px solid var(--border);
+  border-radius: 16px; padding: 14px 16px; box-shadow: var(--shadow);
+  display: grid; gap: 14px;
+}
+.setting-row { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; }
+.setting-text { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.setting-name { font-weight: 600; }
+.setting-hint { font-size: 12px; color: var(--secondary); }
+/* Language segmented control in the settings panel: follow system /
+ * Chinese / English. Wraps below the label on narrow screens. */
+.lang-segments { display: flex; flex-wrap: wrap; gap: 4px; }
+.lang-segments .segment { padding: 4px 10px; white-space: nowrap; }
+@media (max-width: 520px) {
+  /* At phone width the three options get their own full-width row so
+   * the hint text is not squeezed into a narrow column beside them. */
+  .lang-segments { flex-basis: 100%; }
+}
+.import-export { display: flex; flex-wrap: wrap; gap: 8px; }
+.update-status { margin: 0; font-size: 12px; }
+.demo-note {
+  background: #fff8e1; color: #5d4037; border: 1px solid #ffe082;
+  border-radius: 10px; padding: 8px 12px; margin: 0 0 12px; font-size: 13px;
+}
+@media (prefers-color-scheme: dark) {
+  .demo-note { background: #3a2f10; color: #ffe082; border-color: #6d5c1a; }
+}
+.status { margin: 0 2px 10px; min-height: 1.4em; color: var(--secondary); font-size: 13px; }
+
+/* Search + sort row. */
+.search-row { display: flex; gap: 8px; margin-bottom: 4px; }
+.search-row input[type="search"] { flex: 1; min-width: 0; margin-top: 0; }
+
+/* Capsule segments: Activated / Stopped / Featured (Stay-style). */
+.segments { display: flex; flex-wrap: wrap; gap: 14px; margin: 10px 2px; }
+.segment {
+  all: unset; cursor: pointer; font-size: 14px; font-weight: 500;
+  color: var(--secondary); padding: 4px 12px; border-radius: 20px;
+}
+.segment.selected { background: var(--segment-selected); color: var(--text); font-weight: 600; }
+
+/* Action row under the segments. */
+.actions-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 16px; }
+
+/* Library: one white rounded container, hairline rows. */
+.library-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; flex-wrap: wrap; margin: 0 2px 8px; }
+.library-actions { display: flex; gap: 6px; }
+.library-actions button { padding: 4px 10px; font-size: 12px; }
+.count-badge {
+  display: inline-block; min-width: 20px; text-align: center;
+  font-size: 11px; font-weight: 700; line-height: 1;
+  background: var(--brand-soft); color: var(--brand);
+  border-radius: 20px; padding: 3px 7px; margin-left: 4px;
+}
+.list-container {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 16px; box-shadow: var(--shadow); overflow: hidden;
+  padding-bottom: 8px;
+}
+.script-list { list-style: none; margin: 0; padding: 0; }
+.script-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 12px; cursor: pointer;
+}
+.script-row + .script-row { border-top: 1px solid var(--border); }
+.script-row.selected { background: var(--brand-soft); }
+.script-row.disabled { opacity: 0.6; }
+.script-icon {
+  flex: none; width: 40px; height: 40px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 18px; font-weight: 700;
+}
+.script-body { flex: 1; min-width: 0; }
+.script-name { font-size: 15px; font-weight: 600; line-height: 1.3; overflow-wrap: break-word; }
+.script-name .version { font-weight: 400; color: var(--secondary); font-size: 13px; }
+.script-desc {
+  font-size: 13px; color: var(--secondary); line-height: 1.35;
+  /* Two-line clamp: break at word boundaries, and only break a long
+   * unbroken token (URL, script name) when it cannot fit on a line. */
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden; overflow-wrap: break-word;
+}
+.status-line {
+  display: flex; align-items: center; gap: 5px; flex-wrap: wrap;
+  font-size: 12px; color: var(--secondary); margin-top: 2px;
+}
+.status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); flex: none; }
+.status-dot.stopped { background: #8e8e93; }
+.status-line .status-text { color: var(--green); font-weight: 600; }
+.status-line .status-text.stopped { color: var(--secondary); }
+.status-line .sep { color: var(--secondary); opacity: 0.6; }
+.status-line .updated { margin-left: auto; }
+.badge {
+  display: inline-block; font-size: 10px; font-weight: 600; line-height: 1;
+  padding: 3px 6px; border-radius: 20px; margin-left: 6px;
+}
+.badge.update { background: rgba(255, 149, 0, 0.16); color: #c93400; }
+.badge.css { background: var(--brand-soft); color: var(--brand); }
+@media (prefers-color-scheme: dark) {
+  .badge.update { color: #ff9f0a; }
+}
+.empty-state { margin: 8px 12px 4px; font-size: 13px; }
+
+/* Detail panel. */
+.detail {
+  margin-top: 16px; background: var(--card); border: 1px solid var(--border);
+  border-radius: 16px; padding: 16px; box-shadow: var(--shadow);
+}
+.detail-head { display: flex; align-items: center; gap: 12px; }
+.detail-head .script-icon { width: 48px; height: 48px; border-radius: 12px; font-size: 22px; }
+.detail-title { flex: 1; min-width: 0; }
+.detail-title h2 { overflow-wrap: break-word; }
+.detail-sub { margin: 0; font-size: 13px; color: var(--secondary); }
+.detail-description { margin: 12px 0 0; font-size: 13px; overflow-wrap: break-word; }
+.meta { display: grid; gap: 6px; margin: 14px 0 0; }
+.meta > div { display: grid; grid-template-columns: 96px 1fr; gap: 8px; min-width: 0; }
+.meta dt { color: var(--secondary); font-size: 13px; }
+.meta dd { margin: 0; min-width: 0; overflow-wrap: break-word; font-size: 13px; }
+.meta dd a { color: var(--brand); text-decoration: none; overflow-wrap: break-word; }
+.meta dd a:hover { text-decoration: underline; }
+.chip-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.chip-list li {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px;
+  background: var(--brand-soft); color: var(--brand);
+  border-radius: 20px; padding: 3px 9px; overflow-wrap: break-word;
+}
+.mini-button { padding: 3px 8px; font-size: 12px; margin-left: 6px; }
+.test-url-label { display: block; margin-top: 14px; font-weight: 600; font-size: 13px; }
+.test-url-label input { width: 100%; margin-top: 4px; font-weight: 400; }
+#test-result { margin: 6px 0 0; font-size: 13px; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+
+/* Editor: always dark, like the reference code editor. */
+.editor-section {
+  margin-top: 16px; background: var(--card); border: 1px solid var(--border);
+  border-radius: 16px; padding: 16px; box-shadow: var(--shadow);
+}
+.editor-header { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 10px; }
+.editor-header h2 { flex: 1; min-width: 120px; }
+.editor { border: 1px solid #333; border-radius: 10px; overflow: hidden; background: var(--editor-bg); }
+.editor .cm-editor { min-height: 320px; max-height: 70vh; font-size: 13px; background: var(--editor-bg); color: #d4d4d4; }
+.editor .cm-editor.cm-focused { outline: 2px solid var(--brand); outline-offset: -1px; }
+.editor .cm-scroller { overflow: auto; }
+.editor .cm-gutters { background: var(--editor-bg); }
+
+/* v0.5.0 feature sections (engines, ad rules, tag rules, media).
+ * Same card language as the library: one rounded card per section,
+ * hairline rows, small action buttons. */
+.feature-section {
+  margin-top: 16px; background: var(--card); border: 1px solid var(--border);
+  border-radius: 20px; padding: 16px; box-shadow: var(--shadow);
+}
+.feature-section h2 { margin-bottom: 4px; }
+.section-hint { margin: 0 0 10px; font-size: 12px; }
+.rule-list { list-style: none; margin: 0; padding: 0; }
+.rule-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 2px; overflow-wrap: break-word;
+}
+.rule-row + .rule-row { border-top: 1px solid var(--border); }
+.rule-row.muted { color: var(--secondary); font-size: 13px; }
+.rule-text { flex: 1; min-width: 0; overflow-wrap: break-word; font-size: 13px; }
+.rule-actions { display: flex; gap: 6px; flex: none; flex-wrap: wrap; }
+.rule-form { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.rule-form input[type="text"], .rule-form input[type="url"] {
+  flex: 1; min-width: 120px; font: inherit; padding: 8px 12px;
+  border: none; border-radius: 10px;
+  background: var(--field); color: var(--text);
+  box-shadow: var(--shadow);
+}
+.rule-status { margin: 8px 2px 0; font-size: 12px; min-height: 1.4em; }
+.media-row { align-items: flex-start; }

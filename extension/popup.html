@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OpenMonkey for Safari</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <main id="app">
+    <header class="app-header">
+      <img class="logo" src="icons/icon.svg" alt="" width="28" height="28" />
+      <div class="app-title">
+        <h1 data-i18n="scriptsTitle">Scripts</h1>
+        <p id="site-host" class="site-host">—</p>
+      </div>
+      <div class="lang-switch" role="group" data-i18n-aria-label="languageLabel">
+        <button id="lang-zh" type="button" class="lang-option" aria-pressed="false">中文</button>
+        <button id="lang-en" type="button" class="lang-option" aria-pressed="false">EN</button>
+      </div>
+      <label class="master-switch" title="Pause or resume script injection on every site">
+        <span class="master-label" data-i18n="masterLabel">Injection</span>
+        <button id="global-toggle" type="button" class="switch on" role="switch" aria-checked="true" data-i18n-aria-label="masterSwitchAria" aria-label="Enable script injection"></button>
+      </label>
+    </header>
+
+    <p id="demo-note" class="demo-note" hidden data-i18n="demoNote">Demo mode: the extension API is unavailable, showing sample data from local storage.</p>
+    <p id="paused-note" class="paused-note" hidden data-i18n="pausedNote">Injection is paused — scripts will not run until you switch it back on.</p>
+
+    <!-- Install prompt: shown when the current tab is a .user.js URL. -->
+    <section id="install-view" hidden>
+      <div class="install-card">
+        <h2 id="install-title" data-i18n="installTitle">Install userscript?</h2>
+        <p id="install-description" class="install-description" hidden></p>
+        <dl class="meta">
+          <div><dt data-i18n="installName">Name</dt><dd id="install-name">—</dd></div>
+          <div><dt data-i18n="installVersion">Version</dt><dd id="install-version">—</dd></div>
+          <div><dt data-i18n="installAuthor">Author</dt><dd id="install-author">—</dd></div>
+          <div><dt data-i18n="installSource">Source</dt><dd id="install-url" class="mono">—</dd></div>
+        </dl>
+        <h3 data-i18n="installRunsOn">Runs on</h3>
+        <ul id="install-matches" class="chip-list"></ul>
+        <h3 data-i18n="installPermissions">Permissions</h3>
+        <ul id="install-grants" class="chip-list"></ul>
+        <p id="install-errors" class="errors" hidden></p>
+        <h3 data-i18n="installSourcePreview">Source preview</h3>
+        <pre id="install-preview" class="preview" tabindex="0"></pre>
+        <div class="actions">
+          <button id="install-button" type="button" class="primary" data-i18n="installScript">Install script</button>
+          <button id="cancel-button" type="button" data-i18n="cancel">Cancel</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Script list: shown for ordinary pages. -->
+    <section id="list-view" hidden>
+      <p class="site-status" id="site-status"></p>
+      <p id="current-url" class="mono muted site-url"></p>
+
+      <input id="popup-search" type="search" placeholder="Filter scripts…" data-i18n-placeholder="searchPlaceholderPopup" data-i18n-aria-label="searchAria" aria-label="Search scripts" />
+
+      <div class="segments" role="tablist" aria-label="Filter scripts">
+        <button id="seg-all" type="button" class="segment selected" role="tab" aria-selected="true" data-i18n="segAll">All</button>
+        <button id="seg-activated" type="button" class="segment" role="tab" aria-selected="false" data-i18n="segActivated">Activated</button>
+        <button id="seg-stopped" type="button" class="segment" role="tab" aria-selected="false" data-i18n="segStopped">Stopped</button>
+      </div>
+
+      <!-- v0.5.0 page features, in the Addons Home-card language:
+           44px coloured circle icon, bold title, grey description,
+           green switch on the right, grey "View help" capsule. -->
+      <section class="features" aria-label="Features">
+        <h2 class="features-title" data-i18n="featuresTitle">Features</h2>
+
+        <div class="feature-card">
+          <span class="feature-icon ad" aria-hidden="true">AD</span>
+          <div class="feature-text">
+            <span class="feature-name" data-i18n="featureAdFilter">Ad filter</span>
+            <span class="feature-desc" data-i18n="featureAdFilterDesc">Hide ads with custom filter rules</span>
+          </div>
+          <button id="toggle-adfilter" type="button" class="switch" role="switch" aria-checked="false" data-i18n-aria-label="featureAdFilter" aria-label="Ad filter"></button>
+          <button type="button" class="help-capsule" data-help="adfilter" data-i18n="helpButton">View help</button>
+          <p class="feature-help" id="help-adfilter" hidden data-i18n="helpAdFilter"></p>
+        </div>
+
+        <div class="feature-card">
+          <span class="feature-icon tag" aria-hidden="true">📌</span>
+          <div class="feature-text">
+            <span class="feature-name" data-i18n="featureTagMode">Tag mode</span>
+            <span class="feature-desc" data-i18n="featureTagModeDesc">Tap to remove ads on a page</span>
+          </div>
+          <button id="toggle-tagmode" type="button" class="switch" role="switch" aria-checked="false" data-i18n-aria-label="featureTagMode" aria-label="Tag mode"></button>
+          <button type="button" class="help-capsule" data-help="tagmode" data-i18n="helpButton">View help</button>
+          <p class="feature-help" id="help-tagmode" hidden data-i18n="helpTagMode"></p>
+        </div>
+
+        <div class="feature-card">
+          <span class="feature-icon dark" aria-hidden="true">🌙</span>
+          <div class="feature-text">
+            <span class="feature-name" data-i18n="featureDarkMode">Dark mode</span>
+            <span class="feature-desc" data-i18n="featureDarkModeDesc">Web dark mode, eye-friendly</span>
+          </div>
+          <button id="toggle-darkmode" type="button" class="switch" role="switch" aria-checked="false" data-i18n-aria-label="featureDarkMode" aria-label="Dark mode"></button>
+          <button type="button" class="help-capsule" data-help="darkmode" data-i18n="helpButton">View help</button>
+          <p class="feature-help" id="help-darkmode" hidden data-i18n="helpDarkMode"></p>
+          <div class="feature-extra" id="darkmode-extra" hidden>
+            <div class="mini-segments" role="group" data-i18n-aria-label="featureDarkMode">
+              <button id="dark-auto" type="button" class="segment" data-i18n="darkModeAuto">Auto</button>
+              <button id="dark-light" type="button" class="segment" data-i18n="darkModeLight">Light</button>
+              <button id="dark-dark" type="button" class="segment" data-i18n="darkModeDark">Dark</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <span class="feature-icon search" aria-hidden="true">🔍</span>
+          <div class="feature-text">
+            <span class="feature-name" data-i18n="featureSmartSearch">Smart search</span>
+            <span class="feature-desc" data-i18n="featureSmartSearchDesc">Trigger word + search word, switch engines fast</span>
+          </div>
+          <button id="toggle-smartsearch" type="button" class="switch" role="switch" aria-checked="false" data-i18n-aria-label="featureSmartSearch" aria-label="Smart search"></button>
+          <button type="button" class="help-capsule" data-help="smartsearch" data-i18n="helpButton">View help</button>
+          <p class="feature-help" id="help-smartsearch" hidden data-i18n="helpSmartSearch"></p>
+          <div class="feature-extra" id="smartsearch-extra" hidden>
+            <div class="smart-search-row">
+              <input id="smart-search-input" type="search" data-i18n-placeholder="smartSearchPlaceholder" placeholder="e.g. bd 猫 · g cats" data-i18n-aria-label="featureSmartSearch" aria-label="Smart search" />
+              <button id="smart-search-go" type="button" class="primary" data-i18n="smartSearchGo">Search</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <span class="feature-icon sniff" aria-hidden="true">▶</span>
+          <div class="feature-text">
+            <span class="feature-name" data-i18n="featureSniff">Resource manager</span>
+            <span class="feature-desc" data-i18n="featureSniffDesc">Find media resources on this page</span>
+          </div>
+          <button id="toggle-sniff" type="button" class="switch" role="switch" aria-checked="false" data-i18n-aria-label="featureSniff" aria-label="Resource manager"></button>
+          <button type="button" class="help-capsule" data-help="sniff" data-i18n="helpButton">View help</button>
+          <p class="feature-help" id="help-sniff" hidden data-i18n="helpSniff"></p>
+        </div>
+      </section>
+
+      <div class="list-container">
+        <p id="empty-state" class="muted empty-state" hidden data-i18n="emptyNoScriptsPopup">No scripts match this page yet.</p>
+        <ul id="script-list" class="script-list"></ul>
+      </div>
+
+      <div id="install-url-row" class="install-url-row" hidden>
+        <input id="install-url-input" type="url" placeholder="https://example.com/script.user.js" data-i18n-aria-label="fetchAria" aria-label="Script URL to install" />
+        <button id="install-url-button" type="button" class="primary" data-i18n="fetchButton">Fetch</button>
+      </div>
+
+      <footer class="popup-footer">
+        <button id="new-script-button" type="button" class="primary" data-i18n="newScript">New script</button>
+        <button id="install-url-toggle" type="button" data-i18n="installFromUrl">Install from URL</button>
+        <button id="open-dashboard" type="button" data-i18n="openDashboard">Open dashboard</button>
+      </footer>
+    </section>
+  </main>
+  <script src="dist/popup.js"></script>
+</body>
+</html>

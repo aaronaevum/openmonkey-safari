@@ -1,0 +1,271 @@
+/* OpenMonkey for Safari — popup styles (v0.3.0, from scratch).
+ *
+ * Stay-style script list, Addons-style feature cards: system grey
+ * background, one white rounded list container, hairline rows,
+ * 40px rounded-square icons, green switches, capsule segments.
+ * Brand purple (#6c5cff) is used sparingly: primary buttons only.
+ * Full dark-mode support via prefers-color-scheme.
+ * See docs/ui-redesign.md. */
+:root {
+  color-scheme: light dark;
+  --bg: #f2f2f7;
+  --card: #ffffff;
+  --text: #1c1c1e;
+  --secondary: #6e6e73;
+  --brand: #6c5cff;
+  --brand-soft: rgba(108, 92, 255, 0.12);
+  --green: #34c759;
+  --orange: #ff9500;
+  --danger: #ff3b30;
+  --border: rgba(60, 60, 67, 0.18);
+  --field: #ffffff;
+  --segment-selected: #e9e9eb;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1c1c1e;
+    --card: #2c2c2e;
+    --text: #f5f5f7;
+    --secondary: #98989d;
+    --brand: #8b7cff;
+    --brand-soft: rgba(139, 124, 255, 0.2);
+    --border: rgba(255, 255, 255, 0.16);
+    --field: #3a3a3c;
+    --segment-selected: #48484a;
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+  }
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body {
+  margin: 0;
+  width: 380px;
+  max-width: 100vw;
+  min-height: 240px;
+  font: 14px/1.45 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+  color: var(--text);
+  background: var(--bg);
+}
+#app { padding: 12px 12px 14px; }
+
+/* Header: logo, title + site, master switch. */
+.app-header { display: flex; align-items: center; gap: 10px; padding: 2px 2px 8px; }
+.logo { border-radius: 7px; flex: none; }
+.app-title { flex: 1; min-width: 0; }
+.app-title h1 { font-size: 17px; line-height: 1.2; margin: 0; letter-spacing: -0.01em; }
+.site-host {
+  margin: 0; font-size: 12px; color: var(--secondary);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.master-switch { display: flex; align-items: center; gap: 6px; flex: none; }
+.master-label { font-size: 12px; color: var(--secondary); }
+
+/* Compact language switch (中文 / EN) in the header. The "follow
+ * system" choice lives in the dashboard settings; here the switch
+ * flips between the two explicit languages. */
+.lang-switch {
+  display: flex; flex: none;
+  background: var(--segment-selected); border-radius: 20px; padding: 2px;
+}
+.lang-option {
+  all: unset; cursor: pointer; font-size: 12px; font-weight: 600;
+  color: var(--secondary); padding: 3px 8px; border-radius: 20px;
+  line-height: 1.3; white-space: nowrap;
+}
+.lang-option.selected { background: var(--card); color: var(--text); box-shadow: var(--shadow); }
+
+/* iOS-style switch (button with role="switch"). */
+.switch {
+  appearance: none; -webkit-appearance: none;
+  width: 51px; height: 31px; flex: none;
+  border: none; border-radius: 16px; padding: 0; cursor: pointer;
+  background: rgba(120, 120, 128, 0.32);
+  position: relative; transition: background 0.15s ease;
+}
+.switch::after {
+  content: ""; position: absolute; top: 2px; left: 2px;
+  width: 27px; height: 27px; border-radius: 50%;
+  background: #fff; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  transition: transform 0.15s ease;
+}
+.switch.on { background: var(--green); }
+.switch.on::after { transform: translateX(20px); }
+.switch.small { width: 44px; height: 27px; }
+.switch.small::after { width: 23px; height: 23px; }
+.switch.small.on::after { transform: translateX(17px); }
+
+.demo-note {
+  background: #fff8e1; color: #5d4037; border: 1px solid #ffe082;
+  border-radius: 10px; padding: 6px 8px; margin: 0 0 8px; font-size: 12px;
+}
+.paused-note {
+  background: var(--brand-soft); color: var(--brand);
+  border-radius: 10px; padding: 6px 8px; margin: 0 0 8px; font-size: 12px;
+}
+@media (prefers-color-scheme: dark) {
+  .demo-note { background: #3a2f10; color: #ffe082; border-color: #6d5c1a; }
+}
+
+.site-status { margin: 2px 2px 0; font-size: 13px; color: var(--secondary); overflow-wrap: break-word; }
+.site-url { margin: 2px 2px 0; font-size: 12px; }
+.mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; overflow-wrap: break-word; }
+.muted { color: var(--secondary); }
+.empty-state { margin: 0; padding: 18px 12px; text-align: center; font-size: 13px; }
+
+input[type="search"], input[type="url"] {
+  width: 100%; font: inherit; padding: 8px 12px; margin-top: 10px;
+  border: none; border-radius: 10px;
+  background: var(--field); color: var(--text);
+  box-shadow: var(--shadow);
+}
+input[type="search"]:focus, input[type="url"]:focus { outline: 2px solid var(--brand); outline-offset: -1px; }
+
+/* Capsule segments: Activated / Stopped / All (Stay-style). */
+.segments { display: flex; flex-wrap: wrap; gap: 14px; margin: 12px 2px 10px; }
+.segment {
+  all: unset; cursor: pointer; font-size: 14px; font-weight: 500;
+  color: var(--secondary); padding: 4px 12px; border-radius: 20px;
+}
+.segment.selected { background: var(--segment-selected); color: var(--text); font-weight: 600; }
+
+/* The list: one white rounded container, hairline rows. */
+.list-container {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 16px; box-shadow: var(--shadow); overflow: hidden;
+}
+.script-list { list-style: none; margin: 0; padding: 0; }
+.script-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 12px;
+}
+.script-row + .script-row { border-top: 1px solid var(--border); }
+.script-row.paused { opacity: 0.75; }
+.script-row.disabled { opacity: 0.6; }
+.script-icon {
+  flex: none; width: 40px; height: 40px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 18px; font-weight: 700;
+}
+.script-body { flex: 1; min-width: 0; }
+.script-name { font-size: 15px; font-weight: 600; line-height: 1.3; overflow-wrap: break-word; }
+.script-name .version { font-weight: 400; color: var(--secondary); font-size: 13px; }
+.script-desc {
+  font-size: 13px; color: var(--secondary); line-height: 1.35;
+  /* Two-line clamp: break at word boundaries, and only break a long
+   * unbroken token (URL, script name) when it cannot fit on a line. */
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden; overflow-wrap: break-word;
+}
+.status-line {
+  display: flex; align-items: center; gap: 5px; flex-wrap: wrap;
+  font-size: 12px; color: var(--secondary); margin-top: 2px;
+}
+.status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); flex: none; }
+.status-dot.stopped { background: #8e8e93; }
+.status-line .status-text { color: var(--green); font-weight: 600; }
+.status-line .status-text.stopped { color: var(--secondary); }
+.status-line .sep { color: var(--secondary); opacity: 0.6; }
+.status-line .updated { margin-left: auto; }
+
+/* Buttons. */
+button {
+  font: inherit; cursor: pointer; border-radius: 10px; padding: 7px 12px;
+  border: 1px solid var(--border); background: var(--card); color: var(--text);
+}
+button.primary { background: var(--brand); border-color: var(--brand); color: #fff; font-weight: 600; }
+.popup-footer { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.popup-footer button { flex: 1; padding: 8px 6px; font-size: 13px; white-space: nowrap; }
+.install-url-row { display: flex; gap: 8px; margin-top: 10px; }
+.install-url-row input { margin-top: 0; flex: 1; min-width: 0; }
+
+/* Install prompt card. */
+.install-card {
+  background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+  padding: 14px; box-shadow: var(--shadow);
+}
+.install-card h2 { font-size: 16px; margin: 0 0 8px; letter-spacing: -0.01em; }
+.install-card h3 {
+  font-size: 11px; margin: 12px 0 4px; text-transform: uppercase;
+  letter-spacing: 0.06em; color: var(--secondary); font-weight: 600;
+}
+.install-description { margin: 0 0 8px; color: var(--secondary); font-size: 13px; }
+.meta { display: grid; gap: 2px; margin: 0; }
+.meta > div { display: grid; grid-template-columns: 64px 1fr; gap: 8px; min-width: 0; }
+.meta dt { color: var(--secondary); font-size: 13px; }
+.meta dd { margin: 0; min-width: 0; overflow-wrap: break-word; font-size: 13px; }
+.chip-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.chip-list li {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px;
+  background: var(--brand-soft); color: var(--brand);
+  border-radius: 20px; padding: 3px 9px; overflow-wrap: break-word;
+}
+.errors { color: #b3261e; background: #fdecea; border: 1px solid #f5c6cb; border-radius: 10px; padding: 6px 8px; font-size: 12px; }
+@media (prefers-color-scheme: dark) {
+  .errors { color: #ff8a80; background: #3d1215; border-color: #6d1f24; }
+}
+.preview {
+  max-height: 220px; overflow: auto; margin: 0; padding: 8px;
+  background: #f6f8fa; color: #24292f; border: 1px solid var(--border); border-radius: 10px;
+  font: 11px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; white-space: pre-wrap; overflow-wrap: break-word;
+}
+@media (prefers-color-scheme: dark) { .preview { background: #161b22; color: #e6edf3; } }
+.tok-comment { color: #6a737d; font-style: italic; }
+.tok-string { color: #0a3069; }
+.tok-keyword { color: #d73a49; font-weight: 600; }
+.actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 12px; }
+
+/* v0.5.0 feature cards — the Addons Home-card language from the
+ * reference screenshots: a dark card (#2c2c2e in dark mode) with a
+ * large radius, a 44px coloured circle icon, a bold white title,
+ * one grey description line, a green switch on the right, and a
+ * grey "View help" capsule at the bottom-right. */
+.features-title {
+  font-size: 12px; margin: 16px 2px 8px; text-transform: uppercase;
+  letter-spacing: 0.06em; color: var(--secondary); font-weight: 600;
+}
+.feature-card {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) auto;
+  column-gap: 12px; row-gap: 8px;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 24px; padding: 16px; margin-bottom: 12px;
+  box-shadow: var(--shadow);
+}
+.feature-icon {
+  width: 44px; height: 44px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 17px; font-weight: 700; flex: none;
+}
+.feature-icon.ad { background: #ff9500; font-size: 13px; }
+.feature-icon.tag { background: #b7791f; }
+.feature-icon.dark { background: #30d158; }
+.feature-icon.search { background: #0a84ff; }
+.feature-icon.sniff { background: #32ade6; }
+.feature-text { display: flex; flex-direction: column; min-width: 0; justify-content: center; }
+.feature-name { font-size: 16px; font-weight: 700; line-height: 1.25; overflow-wrap: break-word; }
+.feature-desc {
+  font-size: 13px; color: var(--secondary); line-height: 1.35;
+  /* The reference has exactly ONE description line per card: never wrap
+   * (a mid-word break looks broken), truncate with an ellipsis instead. */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.feature-card .switch { align-self: center; }
+.help-capsule {
+  grid-column: 3; justify-self: end;
+  background: rgba(120, 120, 128, 0.24); border: none;
+  border-radius: 20px; padding: 6px 14px; font-size: 13px;
+  color: var(--text); white-space: nowrap;
+}
+.feature-help {
+  grid-column: 1 / -1; margin: 0;
+  font-size: 12px; color: var(--secondary); line-height: 1.5;
+}
+.feature-extra { grid-column: 1 / -1; }
+.mini-segments { display: flex; flex-wrap: wrap; gap: 4px; }
+.mini-segments .segment { padding: 4px 12px; white-space: nowrap; }
+.smart-search-row { display: flex; gap: 8px; }
+.smart-search-row input[type="search"] { margin-top: 0; flex: 1; min-width: 0; }
+.smart-search-row button { flex: none; }
