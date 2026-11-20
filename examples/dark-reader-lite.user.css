@@ -1,0 +1,38 @@
+/* ==UserStyle==
+// @name         Dark Reader Lite
+// @namespace    https://openmonkey.example
+// @version      1.0.0
+// @description  A minimal example user style for OpenMonkey for Safari: darkens example.com.
+// @author       OpenMonkey Contributors
+// @match        https://example.com/*
+// ==/UserStyle== */
+
+/*
+ * Dark Reader Lite — example only.
+ *
+ * This is a minimal .user.css example shipped with OpenMonkey for Safari.
+ * It is NOT a full dark-mode tool: it only darkens https://example.com.
+ *
+ * How .user.css handling works in OpenMonkey:
+ * - A .user.css file is a stylesheet with a ==UserStyle== metadata block,
+ *   just as a .user.js file has a ==UserScript== block.
+ * - @match / @include rules decide which sites the style applies to.
+ * - On a matching page, OpenMonkey injects the CSS (everything outside
+ *   the metadata block) as a <style> element, using the same injection
+ *   path as GM_addStyle. The style is removed when the style is disabled
+ *   or uninstalled.
+ * - User styles receive no GM APIs and run no JavaScript.
+ */
+
+body {
+    background-color: #1e1e1e !important;
+    color: #e0e0e0 !important;
+}
+
+a {
+    color: #8ab4f8 !important;
+}
+
+h1, h2, h3, p, div {
+    color: #e0e0e0 !important;
+}
