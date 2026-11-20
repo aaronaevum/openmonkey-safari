@@ -1,0 +1,711 @@
+// !$*UTF8*$!
+//
+// OpenMonkey.xcodeproj — hand-written, minimal Xcode project.
+//
+// Targets:
+//   OpenMonkey           iOS app (iOS 15.0+), bundle id com.openmonkey.safari.app
+//   OpenMonkey-macOS     macOS app (macOS 12.0+), same bundle id, shares App/ + Shared/
+//   OpenMonkeyExtension  Safari Web Extension (iOS), bundle id
+//                        com.openmonkey.safari.app.extension
+//
+// v0.3.0: app entitlements (App/OpenMonkey.entitlements, App Groups
+// group.com.openmonkey.safari) are set on both app targets, the asset
+// catalogue (Assets.xcassets, new </> icon) is in both app targets'
+// Resources phases, the extension target's Resources phase carries a
+// folder reference to extension/dist (rebuilt by the "Build Web
+// Extension" script phase when missing), and HomeView /
+// ScriptDetailView / Design are in both app targets' Sources phases.
+//
+// Follow-ups (not yet in this file):
+//   - A macOS Safari Web Extension target. The iOS extension target below
+//     is the template: duplicate it, change SDKROOT to macosx and the
+//     bundle id / Info.plist path, and embed it in OpenMonkey-macOS.
+//
+// This file was written on Linux and has NOT been opened in Xcode or
+// built with xcodebuild. Open it in Xcode before trusting it; the
+// structure (groups, build phases, configuration lists) follows the
+// standard project.pbxproj format, but a first open in Xcode is the
+// real validation step (see xcode/README.md).
+//
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		71AC5AFD3889C8034C357822 /* OpenMonkeyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3786C322CD091E5844EBF333 /* OpenMonkeyApp.swift */; };
+		38C0B18D0249E11639650B6B /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73A59197EC306036671896FE /* LibraryView.swift */; };
+		FF504C46A67DD7ECB869299F /* EditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67709F26A975FA4BF284D44 /* EditorView.swift */; };
+		CBA15A7CD9B58AE3DE62232B /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35DBE396E78E71966B0C1A01 /* SettingsView.swift */; };
+		300256848B872ECC5BC8E4A4 /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 079CE12039204417F8387D06 /* AppGroup.swift */; };
+		2CDCBA174E66CA34ACEAE248 /* ScriptStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E8BE5EFB5AFE3A8FCB2CFBB /* ScriptStore.swift */; };
+		7F0FF98C24A7144AAF29D7F0 /* MetadataParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CF10DA97E3142B88515273 /* MetadataParser.swift */; };
+		9E74EB3FE81E5F57A698ED6D /* OpenMonkeyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3786C322CD091E5844EBF333 /* OpenMonkeyApp.swift */; };
+		EC9999F12506C32A6E63E236 /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73A59197EC306036671896FE /* LibraryView.swift */; };
+		5D1BA1F3A0711ED6E159C204 /* EditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67709F26A975FA4BF284D44 /* EditorView.swift */; };
+		BD983041227B65E8366139C6 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35DBE396E78E71966B0C1A01 /* SettingsView.swift */; };
+		5BA3BF2D08C2298635F0D3D7 /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 079CE12039204417F8387D06 /* AppGroup.swift */; };
+		FEBEA625CB37CCF7E910CA6E /* ScriptStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E8BE5EFB5AFE3A8FCB2CFBB /* ScriptStore.swift */; };
+		B9D6266AE8A02E45DBA0DD40 /* MetadataParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CF10DA97E3142B88515273 /* MetadataParser.swift */; };
+		5E501084DEE6AA0C74523A06 /* SafariWebExtensionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E121AC3FAEF68472447566D4 /* SafariWebExtensionHandler.swift */; };
+		851B47504A4CEEDDEFE39B7E /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 079CE12039204417F8387D06 /* AppGroup.swift */; };
+		DA93E8B564909F96A8A58E05 /* ScriptStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E8BE5EFB5AFE3A8FCB2CFBB /* ScriptStore.swift */; };
+		F435A0232B262B414DAC823B /* MetadataParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CF10DA97E3142B88515273 /* MetadataParser.swift */; };
+		3D60A918461DCD0CF4B8D9F6 /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB9460857213BCF625511967 /* SafariServices.framework */; };
+		A22F146F113F48439C123341 /* OpenMonkeyExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 58395CDCD1C6D3F355CE6892 /* OpenMonkeyExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+		AD1FCDC851F7B457C3F0888E /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BCBB0BC22EDDE58A36E46BA /* HomeView.swift */; };
+		1CAC99ED279AEBE0DCB0CA93 /* ScriptDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4E604FDEE7B2506C2403B91 /* ScriptDetailView.swift */; };
+		C6AA3D89D0E5E3681F7F2860 /* Design.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C684C8ED4A9E1180E6E7BB /* Design.swift */; };
+		C37090E4645EA1F05A3006D8 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BCBB0BC22EDDE58A36E46BA /* HomeView.swift */; };
+		1F54D25F0D9D591EFA46F896 /* ScriptDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4E604FDEE7B2506C2403B91 /* ScriptDetailView.swift */; };
+		C9CB315C50CBBDE517877E82 /* Design.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C684C8ED4A9E1180E6E7BB /* Design.swift */; };
+		9FCEC828A810A2F35A7E6763 /* MyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7DBCC1DBD75AF42F1221B54 /* MyView.swift */; };
+		EB8DA139CC65DDC3AD06400A /* FeaturePages.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0AFCDD8D50F478EF2564DF /* FeaturePages.swift */; };
+		3C1BD8BEBB1C6EAAE90D0FE7 /* MyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7DBCC1DBD75AF42F1221B54 /* MyView.swift */; };
+		99BD0DC754C370C1E70D78A2 /* FeaturePages.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0AFCDD8D50F478EF2564DF /* FeaturePages.swift */; };
+		597CD651BCE81899023102A6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ACE0986D53E7233B0F37E82F /* Assets.xcassets */; };
+		7DB19846C4E8D69B2C565692 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A272DEF697AD1648AFA26025 /* LaunchScreen.storyboard */; };
+		EB544330A4DEF4DE719E448F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ACE0986D53E7233B0F37E82F /* Assets.xcassets */; };
+		A1EC8050A132B84DDDC078A5 /* dist in Resources */ = {isa = PBXBuildFile; fileRef = 70A6614F505D7B702A96CC19 /* dist */; };
+
+
+/* Begin PBXCopyFilesBuildPhase section */
+		CAAF7CA3C0FA6F0C72DFBC28 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				A22F146F113F48439C123341 /* OpenMonkeyExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		0FC36075EBF4826371A105DE /* OpenMonkey.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "OpenMonkey.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C28BAAA73C5529AF9D38B6CA /* OpenMonkey-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "OpenMonkey-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		58395CDCD1C6D3F355CE6892 /* OpenMonkeyExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OpenMonkeyExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		3786C322CD091E5844EBF333 /* OpenMonkeyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenMonkeyApp.swift; sourceTree = "<group>"; };
+		73A59197EC306036671896FE /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
+		A67709F26A975FA4BF284D44 /* EditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorView.swift; sourceTree = "<group>"; };
+		35DBE396E78E71966B0C1A01 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		E121AC3FAEF68472447566D4 /* SafariWebExtensionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariWebExtensionHandler.swift; sourceTree = "<group>"; };
+		8A7FE89015E5C57CC21D62DC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6630FD15799974D4CC9910D4 /* OpenMonkeyExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OpenMonkeyExtension.entitlements; sourceTree = "<group>"; };
+		079CE12039204417F8387D06 /* AppGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppGroup.swift; sourceTree = "<group>"; };
+		6E8BE5EFB5AFE3A8FCB2CFBB /* ScriptStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptStore.swift; sourceTree = "<group>"; };
+		57CF10DA97E3142B88515273 /* MetadataParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataParser.swift; sourceTree = "<group>"; };
+		BB9460857213BCF625511967 /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+		7BCBB0BC22EDDE58A36E46BA /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		E4E604FDEE7B2506C2403B91 /* ScriptDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptDetailView.swift; sourceTree = "<group>"; };
+		D5C684C8ED4A9E1180E6E7BB /* Design.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Design.swift; sourceTree = "<group>"; };
+		D7DBCC1DBD75AF42F1221B54 /* MyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyView.swift; sourceTree = "<group>"; };
+		CA0AFCDD8D50F478EF2564DF /* FeaturePages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturePages.swift; sourceTree = "<group>"; };
+		D611CABFE068227A5C124044 /* OpenMonkey.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OpenMonkey.entitlements; sourceTree = "<group>"; };
+		ACE0986D53E7233B0F37E82F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A272DEF697AD1648AFA26025 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		70A6614F505D7B702A96CC19 /* dist */ = {isa = PBXFileReference; lastKnownFileType = folder; path = dist; sourceTree = "<group>"; };
+
+
+/* Begin PBXFrameworksBuildPhase section */
+		221BF8365640B914C1D8CC31 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		01F3D2A3034644BE596EFA3C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6FBF606916121DFB31F7D5E2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3D60A918461DCD0CF4B8D9F6 /* SafariServices.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		FC9E215C06AEF1F3E5976BD2 = {
+			isa = PBXGroup;
+			children = (
+				FC385EB87AA8F0133DF8ACA9 /* App */,
+				519508E1E7B02CBDC1305F2D /* Extension */,
+				656E6C9C0AF20A76890F86CF /* WebExtension */,
+				44E22526B624D4E38B629FB5 /* Shared */,
+				0105344EC9EFBA1798A7A269 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		FC385EB87AA8F0133DF8ACA9 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				3786C322CD091E5844EBF333 /* OpenMonkeyApp.swift */,
+				73A59197EC306036671896FE /* LibraryView.swift */,
+				A67709F26A975FA4BF284D44 /* EditorView.swift */,
+				35DBE396E78E71966B0C1A01 /* SettingsView.swift */,
+				7BCBB0BC22EDDE58A36E46BA /* HomeView.swift */,
+				E4E604FDEE7B2506C2403B91 /* ScriptDetailView.swift */,
+				D5C684C8ED4A9E1180E6E7BB /* Design.swift */,
+				D7DBCC1DBD75AF42F1221B54 /* MyView.swift */,
+				CA0AFCDD8D50F478EF2564DF /* FeaturePages.swift */,
+				D611CABFE068227A5C124044 /* OpenMonkey.entitlements */,
+				ACE0986D53E7233B0F37E82F /* Assets.xcassets */,
+				A272DEF697AD1648AFA26025 /* LaunchScreen.storyboard */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		656E6C9C0AF20A76890F86CF /* WebExtension */ = {
+			isa = PBXGroup;
+			children = (
+				70A6614F505D7B702A96CC19 /* dist */,
+			);
+			path = ../extension;
+			sourceTree = "<group>";
+		};
+		519508E1E7B02CBDC1305F2D /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				E121AC3FAEF68472447566D4 /* SafariWebExtensionHandler.swift */,
+				8A7FE89015E5C57CC21D62DC /* Info.plist */,
+				6630FD15799974D4CC9910D4 /* OpenMonkeyExtension.entitlements */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		44E22526B624D4E38B629FB5 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				079CE12039204417F8387D06 /* AppGroup.swift */,
+				6E8BE5EFB5AFE3A8FCB2CFBB /* ScriptStore.swift */,
+				57CF10DA97E3142B88515273 /* MetadataParser.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		0105344EC9EFBA1798A7A269 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0FC36075EBF4826371A105DE /* OpenMonkey.app */,
+				C28BAAA73C5529AF9D38B6CA /* OpenMonkey-macOS.app */,
+				58395CDCD1C6D3F355CE6892 /* OpenMonkeyExtension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		068D4868A7651F64FB6F1BD5 /* OpenMonkey */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 71FF24A02F2C7997D9027790 /* Build configuration list for PBXNativeTarget "OpenMonkey" */;
+			buildPhases = (
+				7D4AF0255FC7CCC57769541E /* Sources */,
+				221BF8365640B914C1D8CC31 /* Frameworks */,
+				4AED31C1C2108D899D4C64A0 /* Resources */,
+				CAAF7CA3C0FA6F0C72DFBC28 /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3D9FBE5BC1D2B59CC7353EC9 /* PBXTargetDependency */,
+			);
+			name = "OpenMonkey";
+			productName = "OpenMonkey";
+			productReference = 0FC36075EBF4826371A105DE /* OpenMonkey.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A6BA1CD7D37CAA1416D9EAC0 /* OpenMonkey-macOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 251DD57F76CA79AAC99DF1CC /* Build configuration list for PBXNativeTarget "OpenMonkey-macOS" */;
+			buildPhases = (
+				0B221D52ED42DD63595302E0 /* Sources */,
+				01F3D2A3034644BE596EFA3C /* Frameworks */,
+				D6D8EA4A8DF9BBD59B855A29 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "OpenMonkey-macOS";
+			productName = "OpenMonkey-macOS";
+			productReference = C28BAAA73C5529AF9D38B6CA /* OpenMonkey-macOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+		EB9397D502D3F8EB410A49E9 /* OpenMonkeyExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0229A2111CA51B328E1D666D /* Build configuration list for PBXNativeTarget "OpenMonkeyExtension" */;
+			buildPhases = (
+				F85C3EB46DC6A93EB4CB82A4 /* Sources */,
+				6FBF606916121DFB31F7D5E2 /* Frameworks */,
+				BB18F5791BB74AFA38D93D22 /* Build Web Extension */,
+				54189AB39FFF63A51CADA88C /* Resources */,
+				D69B37CF1ADD4FD793DAAAAF /* Flatten Web Extension */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = OpenMonkeyExtension;
+			productName = OpenMonkeyExtension;
+			productReference = 58395CDCD1C6D3F355CE6892 /* OpenMonkeyExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		265252B362B375D8162E0BAB /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					068D4868A7651F64FB6F1BD5 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+					A6BA1CD7D37CAA1416D9EAC0 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+					EB9397D502D3F8EB410A49E9 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+				};
+			};
+			buildConfigurationList = E070F356A09397DAD2FD5FD6 /* Build configuration list for PBXProject "OpenMonkey" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = FC9E215C06AEF1F3E5976BD2;
+			productRefGroup = 0105344EC9EFBA1798A7A269 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				068D4868A7651F64FB6F1BD5 /* OpenMonkey */,
+				A6BA1CD7D37CAA1416D9EAC0 /* OpenMonkey-macOS */,
+				EB9397D502D3F8EB410A49E9 /* OpenMonkeyExtension */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		4AED31C1C2108D899D4C64A0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				597CD651BCE81899023102A6 /* Assets.xcassets in Resources */,
+				7DB19846C4E8D69B2C565692 /* LaunchScreen.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D6D8EA4A8DF9BBD59B855A29 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EB544330A4DEF4DE719E448F /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		54189AB39FFF63A51CADA88C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1EC8050A132B84DDDC078A5 /* dist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section *//* Begin PBXShellScriptBuildPhase section */
+		BB18F5791BB74AFA38D93D22 /* Build Web Extension */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Build Web Extension";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Rebuild the web extension (extension/dist) when it is missing and npm is available.\n# dist/ is generated by `npm run build` and is not in git; without it the extension\n# target would ship an empty Resources folder.\nif [ ! -d \"${PROJECT_DIR}/../extension/dist\" ] && command -v npm >/dev/null 2>&1; then\n  (cd \"${PROJECT_DIR}/..\" && npm ci && npm run build)\nfi\n";
+		};
+		D69B37CF1ADD4FD793DAAAAF /* Flatten Web Extension */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Flatten Web Extension";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# The Resources phase copies the extension/dist folder reference as a `dist/`\n# subfolder, but Safari expects manifest.json and the other web files at the\n# .appex root. Move them up one level and drop the empty folder.\nAPPEX=\"${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME}\"\nif [ -d \"${APPEX}/dist\" ]; then\n  cp -R \"${APPEX}/dist/\"* \"${APPEX}/\"\n  rm -rf \"${APPEX}/dist\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		7D4AF0255FC7CCC57769541E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				71AC5AFD3889C8034C357822 /* OpenMonkeyApp.swift in Sources */,
+				38C0B18D0249E11639650B6B /* LibraryView.swift in Sources */,
+				FF504C46A67DD7ECB869299F /* EditorView.swift in Sources */,
+				CBA15A7CD9B58AE3DE62232B /* SettingsView.swift in Sources */,
+				AD1FCDC851F7B457C3F0888E /* HomeView.swift in Sources */,
+				1CAC99ED279AEBE0DCB0CA93 /* ScriptDetailView.swift in Sources */,
+				C6AA3D89D0E5E3681F7F2860 /* Design.swift in Sources */,
+				9FCEC828A810A2F35A7E6763 /* MyView.swift in Sources */,
+				EB8DA139CC65DDC3AD06400A /* FeaturePages.swift in Sources */,
+				300256848B872ECC5BC8E4A4 /* AppGroup.swift in Sources */,
+				2CDCBA174E66CA34ACEAE248 /* ScriptStore.swift in Sources */,
+				7F0FF98C24A7144AAF29D7F0 /* MetadataParser.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0B221D52ED42DD63595302E0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9E74EB3FE81E5F57A698ED6D /* OpenMonkeyApp.swift in Sources */,
+				EC9999F12506C32A6E63E236 /* LibraryView.swift in Sources */,
+				5D1BA1F3A0711ED6E159C204 /* EditorView.swift in Sources */,
+				BD983041227B65E8366139C6 /* SettingsView.swift in Sources */,
+				C37090E4645EA1F05A3006D8 /* HomeView.swift in Sources */,
+				1F54D25F0D9D591EFA46F896 /* ScriptDetailView.swift in Sources */,
+				C9CB315C50CBBDE517877E82 /* Design.swift in Sources */,
+				3C1BD8BEBB1C6EAAE90D0FE7 /* MyView.swift in Sources */,
+				99BD0DC754C370C1E70D78A2 /* FeaturePages.swift in Sources */,
+				5BA3BF2D08C2298635F0D3D7 /* AppGroup.swift in Sources */,
+				FEBEA625CB37CCF7E910CA6E /* ScriptStore.swift in Sources */,
+				B9D6266AE8A02E45DBA0DD40 /* MetadataParser.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F85C3EB46DC6A93EB4CB82A4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5E501084DEE6AA0C74523A06 /* SafariWebExtensionHandler.swift in Sources */,
+				851B47504A4CEEDDEFE39B7E /* AppGroup.swift in Sources */,
+				DA93E8B564909F96A8A58E05 /* ScriptStore.swift in Sources */,
+				F435A0232B262B414DAC823B /* MetadataParser.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		3D9FBE5BC1D2B59CC7353EC9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EB9397D502D3F8EB410A49E9 /* OpenMonkeyExtension */;
+			targetProxy = 3D22B8B0F4ED0F585BAC040D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXContainerItemProxy section */
+		3D22B8B0F4ED0F585BAC040D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 265252B362B375D8162E0BAB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EB9397D502D3F8EB410A49E9;
+			remoteInfo = OpenMonkeyExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin XCBuildConfiguration section */
+		CBA21BC7D0DFC0CDD1CA2269 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFS = "";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		0882A665D4DAB097DE9FBFC9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFS = "";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		FBBF6BF717F4A019007F3DB9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = App/OpenMonkey.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "Use Face ID to unlock OpenMonkey when App Lock is on. 开启应用锁后，使用面容 ID 解锁 OpenMonkey。";
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.5.3;
+				PRODUCT_BUNDLE_IDENTIFIER = com.openmonkey.safari.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		70853D65891E1B70F77499A4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = App/OpenMonkey.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "Use Face ID to unlock OpenMonkey when App Lock is on. 开启应用锁后，使用面容 ID 解锁 OpenMonkey。";
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.5.3;
+				PRODUCT_BUNDLE_IDENTIFIER = com.openmonkey.safari.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		ACD49D1A62A2F871C65A7743 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = App/OpenMonkey.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "Use Face ID to unlock OpenMonkey when App Lock is on. 开启应用锁后，使用面容 ID 解锁 OpenMonkey。";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 0.5.3;
+				PRODUCT_BUNDLE_IDENTIFIER = com.openmonkey.safari.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		90E4AFD6104AB816F7E2F932 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = App/OpenMonkey.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "Use Face ID to unlock OpenMonkey when App Lock is on. 开启应用锁后，使用面容 ID 解锁 OpenMonkey。";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 0.5.3;
+				PRODUCT_BUNDLE_IDENTIFIER = com.openmonkey.safari.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		3024749E0195AA8032CEA7A5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Extension/OpenMonkeyExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				INFOPLIST_FILE = Extension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 0.5.3;
+				PRODUCT_BUNDLE_IDENTIFIER = com.openmonkey.safari.app.extension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				APPLICATION_EXTENSION_API_ONLY = YES;
+			};
+			name = Debug;
+		};
+		577ADD6343845AAC47F3D4EC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Extension/OpenMonkeyExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				INFOPLIST_FILE = Extension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 0.5.3;
+				PRODUCT_BUNDLE_IDENTIFIER = com.openmonkey.safari.app.extension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				APPLICATION_EXTENSION_API_ONLY = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E070F356A09397DAD2FD5FD6 /* Build configuration list for PBXProject "OpenMonkey" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CBA21BC7D0DFC0CDD1CA2269 /* Debug */,
+				0882A665D4DAB097DE9FBFC9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		71FF24A02F2C7997D9027790 /* Build configuration list for PBXNativeTarget "OpenMonkey" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FBBF6BF717F4A019007F3DB9 /* Debug */,
+				70853D65891E1B70F77499A4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		251DD57F76CA79AAC99DF1CC /* Build configuration list for PBXNativeTarget "OpenMonkey-macOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ACD49D1A62A2F871C65A7743 /* Debug */,
+				90E4AFD6104AB816F7E2F932 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0229A2111CA51B328E1D666D /* Build configuration list for PBXNativeTarget "OpenMonkeyExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3024749E0195AA8032CEA7A5 /* Debug */,
+				577ADD6343845AAC47F3D4EC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 265252B362B375D8162E0BAB /* Project object */;
+}
