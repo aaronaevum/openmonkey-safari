@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- Replace TEAMID with your Apple Developer Team ID when signing.
+	     With a free (personal) Apple ID, Xcode fills this in automatically
+	     from the signing team; the value below is only a placeholder so
+	     the file is complete and readable before signing is configured. -->
+	<key>application-identifier</key>
+	<string>TEAMID.com.openmonkey.safari.app.extension</string>
+	<key>com.apple.security.application-groups</key>
+	<array>
+		<string>group.com.openmonkey.safari</string>
+	</array>
+</dict>
+</plist>
