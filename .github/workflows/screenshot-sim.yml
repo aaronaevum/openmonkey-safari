@@ -1,0 +1,101 @@
+# Screenshot the real app on a real iOS Simulator and keep the PNG as
+# an artifact. This workflow exists because of v0.5.1: the Home layout
+# was "verified" with HTML previews (30 groups, 0 failures) while the
+# real SwiftUI app on Aaron's phone was still broken — nav title pushed
+# ~130pt down, ~122pt black bands top and bottom, only 2.5 cards
+# visible, the 3rd card under the pill, descriptions truncating. An
+# HTML mock renders a 926pt-tall box by construction; it can never
+# catch a SwiftUI layout bug. From v0.5.2 on, NO IPA is delivered
+# until this workflow's screenshot has been looked at and the real
+# render matches the design.
+#
+# What it does: builds the app for the iOS Simulator (unsigned, like
+# the IPA build), boots an iPhone 13 Pro Max simulator (428x926pt —
+# Aaron's phone), installs and launches the app, waits for first
+# render, and screenshots the Home tab. The My tab shares the same
+# root layout, so Home proves the fix for both; a My screenshot needs
+# a tap, which simctl cannot do (a launch-argument tab hook would be
+# needed — not added yet).
+#
+# Notes:
+# - The screenshot is taken in dark mode (the user's phone is dark),
+#   set via the simulator's global defaults before launch.
+# - The artifact is kept 7 days, same as the IPA.
+
+name: Screenshot on simulator
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'xcode/**'
+      - 'extension/**'
+      - 'scripts/generate-icons.py'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/screenshot-sim.yml'
+
+jobs:
+  screenshot-sim:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install web extension dependencies
+        run: npm ci
+
+      - name: Build web extension
+        run: npm run build
+
+      - name: Build iOS app for simulator (unsigned)
+        run: |
+          xcodebuild \
+            -project xcode/OpenMonkey.xcodeproj \
+            -scheme OpenMonkey \
+            -configuration Debug \
+            -sdk iphonesimulator \
+            -derivedDataPath build/sim \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            build
+
+      - name: Boot iPhone 13 Pro Max simulator and screenshot Home
+        run: |
+          set -e
+          UDID=$(xcrun simctl list devices available | grep -i 'iPhone 13 Pro Max' | head -1 | grep -oE '[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}' || true)
+          if [ -z "$UDID" ]; then
+            echo "No iPhone 13 Pro Max simulator found, creating one"
+            UDID=$(xcrun simctl create 'iPhone 13 Pro Max' 'iPhone 13 Pro Max')
+          fi
+          echo "Simulator UDID: $UDID"
+          xcrun simctl boot "$UDID" || true
+          xcrun simctl bootstatus "$UDID" -b
+          APP="build/sim/Build/Products/Debug-iphonesimulator/OpenMonkey.app"
+          if [ ! -d "$APP" ]; then
+            echo "MISSING simulator app bundle: $APP"
+            exit 1
+          fi
+          # Dark mode, like the user's phone. Use `simctl ui
+          # appearance` — the `defaults write -g AppleInterfaceStyle`
+          # used in v0.5.2 did NOT take effect (run #1's screenshot
+          # came out light).
+          xcrun simctl ui "$UDID" appearance dark || true
+          xcrun simctl install "$UDID" "$APP"
+          xcrun simctl launch "$UDID" com.openmonkey.safari.app
+          sleep 10
+          xcrun simctl io "$UDID" screenshot home-428x926-dark.png
+          ls -la home-428x926-dark.png
+          file home-428x926-dark.png
+
+      - name: Upload simulator screenshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: simulator-screenshot-home
+          path: home-428x926-dark.png
+          retention-days: 7
