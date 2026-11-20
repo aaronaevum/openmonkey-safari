@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="OpenMonkey">
+  <!-- OpenMonkey mark, v0.3.0 (see docs/ui-redesign.md): a purple
+       squircle with a bold white geometric </> glyph. No animal
+       imagery of any kind. Original artwork; nothing was copied
+       from any existing app. -->
+  <rect width="128" height="128" rx="28" fill="#6c5cff"/>
+  <g fill="none" stroke="#ffffff" stroke-width="14" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="43,44 31,64 43,84"/>
+    <line x1="65" y1="38" x2="77" y2="90"/>
+    <polyline points="85,44 97,64 85,84"/>
+  </g>
+</svg>
