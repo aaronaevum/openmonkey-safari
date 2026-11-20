@@ -1,0 +1,49 @@
+# Node / build
+node_modules/
+dist/
+build/
+*.tsbuildinfo
+
+# Generated icons — derived from extension/icons/icon.svg, regenerate with:
+#   python3 scripts/generate-icons.py
+extension/icons/*.png
+
+# Xcode
+DerivedData/
+*.xcuserstate
+*.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+*.xcodeproj/project.xcworkspace/
+*.ipa
+*.mobileprovision
+*.provisionprofile
+*.cer
+*.p12
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Environment / secrets — never commit these
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials.json
+*credentials*
+
+# Logs / caches
+*.log
+npm-debug.log*
+.npm/
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+dist-test/
+.screenshots/

@@ -1,0 +1,1 @@
+{"compilerOptions":{"noEmit":true,"outDir":"extension/dist","sourceMap":false},"exclude":["node_modules","extension/dist","dist-test","tests"],"extends":"./tsconfig.json","include":["extension/src/**/*"]}
